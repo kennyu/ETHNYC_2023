@@ -13,7 +13,6 @@ def deploy_to_evm(url, address, private_key, contract_abi, contract_bytecode):
 
     transaction = {
         'gas': gas_estimate,
-        'gasPrice': w3.to_wei('20', 'gwei'),
         'nonce': w3.eth.get_transaction_count(my_address),
     }
 
@@ -44,11 +43,18 @@ if __name__ == '__main__':
     except Exception:
         print("Error getting bytecode or ABI")
 
-    # Deploy to a test net
+    # # Deploy to a test net
     URL = os.environ.get("ETH_GOERLI_URL")
-    ADDRESS = os.environ.get("ETH_GOERLI_ADDRESS")
-    PRIVATE_KEY = os.environ.get("ETH_GOERLI_PRIVATE_KEY")
+    ADDRESS = os.environ.get("ADDRESS")
+    PRIVATE_KEY = os.environ.get("PRIVATE_KEY")
 
     deployed_contract_addr = deploy_to_evm(URL, ADDRESS, PRIVATE_KEY, ABI, BYTECODE)
     print("Sent to Ethereum Testnet Goerli: ", deployed_contract_addr)
     print("Check it out here - ", "https://goerli.etherscan.io/address/" + deployed_contract_addr )
+
+    # Deploy to gnosis test net
+
+    URL = os.environ.get("GNOSIS_TESTNET_URL")
+    deployed_contract_addr = deploy_to_evm(URL, ADDRESS, PRIVATE_KEY, ABI, BYTECODE)
+    print("Sent to Gnosis Testnet Chiado: ", deployed_contract_addr)
+    print("Check it out here - ", "https://gnosis-chiado.blockscout.com/address/" + deployed_contract_addr )
