@@ -15,7 +15,8 @@ export GNOSIS_TESTNET_URL=""    # RPC Url of the gnosis testnet
 ```
 ### Run the commands
 ```
-mv env.sh set_env.sh && source set_env.sh
+python -m venv migrate_project
 pip install
+mv env.sh set_env.sh && source set_env.sh
 python app.py
 ```
