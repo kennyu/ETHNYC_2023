@@ -24,7 +24,7 @@ def deploy_to_evm(url, address, private_key, contract_abi, contract_bytecode):
 
     # Wait for transaction to be mined
     txn_receipt = w3.eth.wait_for_transaction_receipt(txn_hash)
-    print(txn_receipt)
+
     return txn_receipt['contractAddress']
 
 if __name__ == '__main__':
@@ -37,6 +37,7 @@ if __name__ == '__main__':
     SOURCE_ABI_URL = os.environ.get("SOURCE_ABI_URL") + f"?module=contract&action=getabi&address={SOURCE_CONTRACT_ADDR}&apikey={SOURCE_ABI_API_KEY}"
 
     w3 = Web3(HTTPProvider(SOURCE_URL))
+    print("Downloading bytecode and ABI from ", SOURCE_CONTRACT_ADDR)
     try:
         BYTECODE = w3.eth.get_code(SOURCE_CONTRACT_ADDR)
         ABI = requests.get(SOURCE_ABI_URL,timeout=10).json()['result']
@@ -44,6 +45,7 @@ if __name__ == '__main__':
         print("Error getting bytecode or ABI")
 
     # # Deploy to a test net
+    print("Deploying to Ethereum Testnet")
     URL = os.environ.get("ETH_GOERLI_URL")
     ADDRESS = os.environ.get("ADDRESS")
     PRIVATE_KEY = os.environ.get("PRIVATE_KEY")
@@ -53,7 +55,7 @@ if __name__ == '__main__':
     print("Check it out here - ", "https://goerli.etherscan.io/address/" + deployed_contract_addr )
 
     # Deploy to gnosis test net
-
+    print("Deploying to Gnosis Testnet")
     URL = os.environ.get("GNOSIS_TESTNET_URL")
     deployed_contract_addr = deploy_to_evm(URL, ADDRESS, PRIVATE_KEY, ABI, BYTECODE)
     print("Sent to Gnosis Testnet Chiado: ", deployed_contract_addr)
